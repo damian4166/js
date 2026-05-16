@@ -3,17 +3,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: vite-react-prod
+    container_name: js-prod
     restart: unless-stopped
     networks:
       - proxy
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.react-router.rule=Host(`app.vps.malejka.lowicz.pl`)"
-      - "traefik.http.routers.react-router.entrypoints=websecure"
-      - "traefik.http.routers.react-router.tls.certresolver=myresolver"
-      - "traefik.http.services.react-service.loadbalancer.server.port=80"
+      - "traefik.http.routers.js-router.rule=Host(`js.vps.malejka.lowicz.pl`)"
+      - "traefik.http.routers.js-router.entrypoints=websecure"
+      - "traefik.http.routers.js-router.tls.certresolver=myresolver"
+      - "traefik.http.services.js-service.loadbalancer.server.port=80"
 
 networks:
   proxy:
