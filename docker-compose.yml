@@ -7,4 +7,4 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./app:/app               # Mapuje lokalny kod do kontenera
+      - ./app:/usr/share/nginx/html               # Mapuje lokalny kod do kontenera
