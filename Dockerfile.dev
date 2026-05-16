@@ -1,0 +1,18 @@
+FROM node:26-alpine
+
+WORKDIR /app
+
+# Kopiowanie plików zależności i ich instalacja
+COPY ./app/package*.json ./
+RUN npm install
+
+# Kopiowanie reszty kodu (choć i tak użyjemy wolumenów w docker-compose)
+COPY ./app .
+
+# Udostępnienie portu (3000 dla Create React App, 5173 dla Vite)
+EXPOSE 5173
+
+# Komenda startowa
+# Użyj "npm start" dla Create React App (CRA)
+# Użyj "npm run dev" jeśli korzystasz z Vite
+CMD ["npm", "run", "dev", "--", "--host"]
