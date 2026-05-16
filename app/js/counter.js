@@ -8,7 +8,6 @@ class Counter
     }
     wyswietlKlikniecia()
     {
-        console.log(this.licznikKlikniec)
         this.kontenerNapisy.innerHTML =`Brawo! Kliknięto mnie ${this.licznikKlikniec} razy.`;
     }
     createResetButton()
@@ -16,8 +15,8 @@ class Counter
         let reset = document.createElement("button");
         reset.setAttribute("id","reset");
         reset.innerHTML = "Resetuj";
-        reset.addEventListener("click", this.eventClickReset);
-        kontenerPrzyciski.appendChild(reset);
+        reset.addEventListener("click", this.eventClickReset.bind(this));
+        this.kontenerPrzyciski.appendChild(reset);
     }
     eventClickReset()
     {
@@ -30,7 +29,7 @@ class Counter
         this.licznikKlikniec++;
         if(this.licznikKlikniec == 1)
         {
-           createResetButton();
+           this.createResetButton();
         }
         console.log(this.wyswietlKlikniecia);
         console.log(this.licznikKlikniec);
@@ -40,7 +39,7 @@ class Counter
     {
         let przycisk = document.createElement("button");
         przycisk.innerHTML = "Naciśnij mnie";
-        przycisk.addEventListener("click", this.eventClickButton)
+        przycisk.addEventListener("click", this.eventClickButton.bind(this))
         this.kontenerPrzyciski = document.createElement("div");
         this.kontenerPrzyciski.setAttribute("id","przyciski");
         this.kontenerPrzyciski.appendChild(przycisk);
