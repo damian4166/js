@@ -1,47 +1,10 @@
-class Osoba{
-    imie;
-    nazwisko;
-    powitanie()
-    {
-        document.getElementById("container").innerText = `Cześć, jestem ${this.imie} ${this.nazwisko}`;
-    }
+import {PI, dodaj} from './matematyka.js'
+import Kalkulator from './matematyka.js';
 
-    constructor(imie_k, nazwisko_k)
-    {
-        this.imie = imie_k;
-        this.nazwisko = nazwisko_k;
-    }
-};
+import Counter from './counter.js' ;
 
-let uczen = new Osoba("Tadeusz", "Kowalski");
-//uczen.powitanie();
-/*
-let kontener = document.getElementById("container")
-kontener.innerText = "Czekam na kliknięcie...";
-
-let kontenerPrzyciski = document.getElementById("przyciski");
-
-let przycisk = document.getElementById("przycisk");
-let licznikKlikniec = 0;
-function wyswietlKlikniecia()
-{
-    kontener.innerHTML =`Brawo! Kliknięto mnie ${licznikKlikniec} razy.`;
-}
-przycisk.addEventListener("click", function(){
-    licznikKlikniec++
-    if(licznikKlikniec == 1)
-    {
-        let reset = document.createElement("button");
-        reset.setAttribute("id","reset")
-        reset.innerHTML = "Resetuj";
-        reset.addEventListener("click", function(){
-            licznikKlikniec = 0;
-            kontenerPrzyciski.removeChild(reset);
-            wyswietlKlikniecia();
-        })
-        kontenerPrzyciski.appendChild(reset);
-    }
-    wyswietlKlikniecia();
-})*/
+console.log("Liczba PI to:", PI);
+console.log("Wynik dodawania:",dodaj(5,10))
+let mojKalkulator = new Kalkulator();
 
 let counter = new Counter("container");
