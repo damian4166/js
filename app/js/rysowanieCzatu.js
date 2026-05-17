@@ -4,8 +4,9 @@ class RysowanieCzatu
     {
         this.idKontenera = idKontenera;
     }
-    narysujLogowanie()
+    narysujLogowanie(callback)
     {
+        
         document.getElementById(this.idKontenera).innerHTML = "";
         let formularz = document.createElement("form");
         let input = document.createElement("input");
@@ -17,16 +18,19 @@ class RysowanieCzatu
         label.innerHTML = "Podaj swój nick, aby wejść na czat:<br>";
         button.setAttribute("type", "button");
         button.setAttribute("value","Wejdź na czat")
-        button.addEventListener("click",function(){
+        button.addEventListener("click",function(callback){
             //console.log(document.getElementById("nick").value)
-            localStorage.setItem('shoutboxNick',nick.value)
-            this.narysujCzat();
+            localStorage.setItem('shoutboxNick',nick.value);
+            console.log(callback)
+            callback();
         }.bind(this));
         formularz.appendChild(label);
         formularz.appendChild(input);
         formularz.appendChild(button);
 
-        document.getElementById(this.idKontenera).appendChild(formularz)
+        document.getElementById(this.idKontenera).appendChild(formularz);
+        
+
     }
     narysujHeaderCzatu()
     {
@@ -68,6 +72,7 @@ class RysowanieCzatu
     {
         document.getElementById(this.idKontenera).innerHTML = "";
         document.getElementById(this.idKontenera).appendChild(this.narysujHeaderCzatu())
+        console.log("dane",dane)
 
     }
 }

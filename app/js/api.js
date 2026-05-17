@@ -19,6 +19,7 @@ class Api{
             let dane = await odpowiedz.json();
             
             // 3. Zrób coś z tymi danymi!
+            console.log(dane)
             callback(dane);
         }
         catch(blad){

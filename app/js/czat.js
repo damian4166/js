@@ -1,32 +1,29 @@
 import Api from "./api.js";
 import RysowanieCzatu from "./rysowanieCzatu.js";
+import Auth from "./auth.js";
 class Czat
 {
     constructor(idKontenera, adresApi)
     {
         this.api = new Api(adresApi);
         this.rysowanieCzatu = new RysowanieCzatu(idKontenera);
-        this.inicjalizujHtml();
+        this.auth = new Auth();
+        this.startCzat();
     }
-
-    
-    inicjalizujCzat()
+    startCzat()
     {
-        console.log("Rysuje Czat");
-        this.api.pobierzDane(this.rysowanieCzatu.narysujCzat.bind(this.rysowanieCzatu));
-
-    }
-    inicjalizujHtml()
-    {
-        let shoutboxNick = localStorage.getItem("shoutboxNick");
-        if(!shoutboxNick)
+        if(this.auth.isLoged())
         {
-            this.rysowanieCzatu.narysujLogowanie();
+            console.log("zalogowany")
+            this.rysujCzat();
             return;
         }
-        this.inicjalizujCzat();
-        
-        
+        console.log("niezalogowany")
+        this.rysowanieCzatu.narysujLogowanie(this.rysujCzat)
+    }
+    rysujCzat()
+    {
+        this.api.pobierzDane(this.rysowanieCzatu.narysujCzat.bind(this.rysowanieCzatu));
     }
 }
 
