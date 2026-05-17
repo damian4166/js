@@ -42,5 +42,10 @@ pull:
 	@echo "📥 Pobieranie aktualizacji..."
 	git pull
 
+.PHONY: info
 info:
 	@echo "👉 Aktywne środowisko: $(ENV_NAME) ($(ENV_FILE))"
+
+.PHONY: test
+test:
+	docker run --rm -v "${PWD}/app:/app" -w /app node:22 npm test

@@ -16,7 +16,11 @@ class Koszyk{
     {
         console.log(this.items);
     }
+    zwrocKoszyk()
+    {
+        return this.items;
+    }
 
     //nazwa, cena, typ
 }
-export default Koszyk
+module.exports = Koszyk;
