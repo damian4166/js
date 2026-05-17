@@ -7,6 +7,9 @@ import Koszyk from './koszyk.js';
 
 import Fabryka from './fabryka.js';
 
+import pobierzDane from './pobranieApi.js';
+import GeneratorSucharow from './generatorSucharow.js';
+
 /*
 console.log("Liczba PI to:", PI);
 console.log("Wynik dodawania:",dodaj(5,10))
@@ -26,7 +29,7 @@ koszykDrugi.dodajItem("Komputer");
 koszykDrugi.pokazKoszyk();
 koszyk.pokazKoszyk();
 */
-
+/*
 let fabryka = new Fabryka();
 
 let volvo = fabryka.stworzPojazd("osobowe", "volvo v40");
@@ -35,4 +38,13 @@ let scania = fabryka.stworzPojazd("ciezarowe", "scania");
 let koszyk = new Koszyk();
 koszyk.dodajItem(volvo);
 koszyk.dodajItem(scania);
+koszyk.pokazKoszyk();
+*/
+//pobierzDane();
+//let generatorSucharow = new GeneratorSucharow("container");
+
+let koszyk = new Koszyk();
+
+    koszyk.dodajItem("długopis" + " " +  (new Date().toISOString()));
+
 koszyk.pokazKoszyk();
