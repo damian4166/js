@@ -18,8 +18,8 @@ class Czat
             this.rysujCzat();
             return;
         }
-        console.log("niezalogowany")
-        this.rysowanieCzatu.narysujLogowanie(this.rysujCzat)
+        console.log("niezalogowany");
+        this.rysowanieCzatu.narysujLogowanie();
     }
     rysujCzat()
     {

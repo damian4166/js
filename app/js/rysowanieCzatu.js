@@ -1,10 +1,11 @@
+import Api from "./api.js";
 class RysowanieCzatu
 {
     constructor(idKontenera)
     {
         this.idKontenera = idKontenera;
     }
-    narysujLogowanie(callback)
+    narysujLogowanie()
     {
         
         document.getElementById(this.idKontenera).innerHTML = "";
@@ -18,12 +19,11 @@ class RysowanieCzatu
         label.innerHTML = "Podaj swój nick, aby wejść na czat:<br>";
         button.setAttribute("type", "button");
         button.setAttribute("value","Wejdź na czat")
-        button.addEventListener("click",function(callback){
+        button.addEventListener("click",(event) =>{
             //console.log(document.getElementById("nick").value)
             localStorage.setItem('shoutboxNick',nick.value);
-            console.log(callback)
-            callback();
-        }.bind(this));
+            window.location.reload();
+        });
         formularz.appendChild(label);
         formularz.appendChild(input);
         formularz.appendChild(button);
@@ -50,7 +50,7 @@ class RysowanieCzatu
         logoutButton.setAttribute("value","Wyloguj");
         logoutButton.addEventListener("click", function(){
             localStorage.removeItem("shoutboxNick");
-            this.narysujLogowanie();
+            window.location.reload();
         }.bind(this))
         header.appendChild(label);
         header.appendChild(profil);
