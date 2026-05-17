@@ -19,7 +19,6 @@ class Czat
     inicjalizujHtml()
     {
         let shoutboxNick = localStorage.getItem("shoutboxNick");
-        console.log(shoutboxNick)
         if(!shoutboxNick)
         {
             this.rysowanieCzatu.narysujLogowanie();
