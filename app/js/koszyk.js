@@ -16,5 +16,7 @@ class Koszyk{
     {
         console.log(this.items);
     }
+
+    //nazwa, cena, typ
 }
 export default Koszyk
