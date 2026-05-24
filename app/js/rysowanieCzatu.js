@@ -1,9 +1,10 @@
 import Api from "./api.js";
 class RysowanieCzatu
 {
-    constructor(idKontenera)
+    constructor(idKontenera, adresApi)
     {
         this.idKontenera = idKontenera;
+        this.api = new Api(adresApi);
     }
     narysujLogowanie()
     {
@@ -122,29 +123,52 @@ class RysowanieCzatu
     }
     narysujWysylanieCzatu()
     {
-        let wysylanieCzatu = document.createElement("div")
-        wysylanieCzatu.innerHTML = "test"
-        return wysylanieCzatu
+        let wysylanieWiadomosci = document.createElement("form")
+        wysylanieWiadomosci.setAttribute("class", "chat-form");
+        wysylanieWiadomosci.setAttribute("id","formularz-wiadomosci");
+        let wprowadzanaWiadomosc = document.createElement("input");
+        wprowadzanaWiadomosc.setAttribute("type","text");
+        wprowadzanaWiadomosc.setAttribute("id","input-wiadomosc");
+        wprowadzanaWiadomosc.setAttribute("placeholder","Napisz wiadomość...");
+        wprowadzanaWiadomosc.required=true;
+        wprowadzanaWiadomosc.setAttribute("autocomplete","off");
+        let wysylaniePrzycisk = document.createElement("button");
+        wysylaniePrzycisk.setAttribute("type","submit");
+        wysylaniePrzycisk.innerHTML="Wyślij";
+
+        wysylanieWiadomosci.appendChild(wprowadzanaWiadomosc);
+        wysylanieWiadomosci.appendChild(wysylaniePrzycisk);
+
+        wysylanieWiadomosci.addEventListener("submit", async(event) =>{
+            event.preventDefault();
+
+            const nowaWiadomosc = {
+                author: localStorage.getItem("shoutboxNick"),
+                text: document.getElementById("input-wiadomosc").value.trim()
+            }
+
+            if(nowaWiadomosc.text=="")
+            {
+                return;
+            }
+            this.api.wyslijDane(nowaWiadomosc);
+
+            this.api.pobierzDane(this.replaceMainCzat.bind(this));
+            
+            wprowadzanaWiadomosc.value="";
+        })
+        return wysylanieWiadomosci;
     }
-    narysujCzat(dane)
+    replaceMainCzat(dane)
     {
-        
         let oknoWiadomosci = document.getElementById("okno-wiadomosci");
         let zabezpieczenieSkrolowania;
         let odczytanaWysokosc; 
-        if(oknoWiadomosci!= null)
-        {
-            zabezpieczenieSkrolowania = oknoWiadomosci.scrollHeight - oknoWiadomosci.scrollTop <= oknoWiadomosci.clientHeight + 50
-            odczytanaWysokosc = oknoWiadomosci.scrollTop;
-        }
-        else
-        {
-            zabezpieczenieSkrolowania = true;
-        }
-        
-        document.getElementById(this.idKontenera).innerHTML = "";
-        document.getElementById(this.idKontenera).appendChild(this.narysujHeaderCzatu())
-        document.getElementById(this.idKontenera).appendChild(this.narysujMainCzatu(dane));
+     
+        zabezpieczenieSkrolowania = oknoWiadomosci.scrollHeight - oknoWiadomosci.scrollTop <= oknoWiadomosci.clientHeight + 50
+        odczytanaWysokosc = oknoWiadomosci.scrollTop;
+
+        document.getElementById(this.idKontenera).replaceChild(this.narysujMainCzatu(dane), document.getElementById("okno-wiadomosci"));
         oknoWiadomosci = document.getElementById("okno-wiadomosci");
         if(zabezpieczenieSkrolowania)
         {
@@ -154,8 +178,17 @@ class RysowanieCzatu
         {
             oknoWiadomosci.scrollTop = odczytanaWysokosc;
         }
+    }
+    narysujCzat(dane)
+    {
+        document.getElementById(this.idKontenera).innerHTML = "";
+        document.getElementById(this.idKontenera).appendChild(this.narysujHeaderCzatu())
+        document.getElementById(this.idKontenera).appendChild(this.narysujMainCzatu(dane))
         
-        document.getElementById(this.idKontenera).appendChild(this.narysujWysylanieCzatu())
+        
+        document.getElementById(this.idKontenera).appendChild(this.narysujWysylanieCzatu());
+        let oknoWiadomosci = document.getElementById("okno-wiadomosci");
+        oknoWiadomosci.scrollTop = oknoWiadomosci.scrollHeight;
     }
 }
 

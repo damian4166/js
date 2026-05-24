@@ -25,6 +25,19 @@ class Api{
             console.error("Coś poszło nie tak", blad);
         }
     }
+    async wyslijDane(dane)
+    {
+        try {
+            await fetch(this.adresApi, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dane)
+            });
+        } catch (error) {
+            console.error("Błąd wysyłania:", error);
+            alert("Nie udało się wysłać wiadomości.");
+        }        
+    }
 }
 
 

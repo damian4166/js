@@ -6,7 +6,7 @@ class Czat
     constructor(idKontenera, adresApi)
     {
         this.api = new Api(adresApi);
-        this.rysowanieCzatu = new RysowanieCzatu(idKontenera);
+        this.rysowanieCzatu = new RysowanieCzatu(idKontenera, adresApi);
         this.auth = new Auth();
         this.startCzat();
     }
@@ -14,17 +14,19 @@ class Czat
     {
         if(this.auth.isLoged())
         {
-            console.log("zalogowany")
             this.rysujCzat();
-            setInterval(this.rysujCzat.bind(this),3000);
+            setInterval(this.odswierzCzat.bind(this),3000);
             return;
         }
-        console.log("niezalogowany");
         this.rysowanieCzatu.narysujLogowanie();
     }
     rysujCzat()
     {
         this.api.pobierzDane(this.rysowanieCzatu.narysujCzat.bind(this.rysowanieCzatu));
+    }
+    odswierzCzat()
+    {
+        this.api.pobierzDane(this.rysowanieCzatu.replaceMainCzat.bind(this.rysowanieCzatu));
     }
 }
 
