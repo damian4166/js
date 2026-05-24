@@ -5,6 +5,10 @@ class RysowanieCzatu
     {
         this.idKontenera = idKontenera;
         this.api = new Api(adresApi);
+        this.dzwiekNowejWiadomosci = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        this.dzwiekNowejWiadomosci.loop = false;
+        this.idOstatniejWiadomosci = ""; 
+        this.wyszukiwano = false;
     }
     narysujLogowanie()
     {
@@ -46,7 +50,7 @@ class RysowanieCzatu
 
         let profil = document.createElement("h2");
         profil.setAttribute("id","profil");
-        profil.innerHTML = localStorage.getItem("shoutboxNick");
+        profil.innerHTML = `👤  ${localStorage.getItem("shoutboxNick")}`;
 
         let logoutButton = document.createElement("input");
         logoutButton.setAttribute("type", "button");
@@ -64,13 +68,43 @@ class RysowanieCzatu
 
         
     }
+
+    narysujWyszukiwarkeCzatu()
+    {
+        let wyszukiwarka = document.createElement("div");
+        wyszukiwarka.setAttribute("class", "search-bar");
+        let poleWyszukiwarki = document.createElement("input");
+        poleWyszukiwarki.setAttribute("type","text");
+        poleWyszukiwarki.setAttribute("id","input-szukaj");
+        poleWyszukiwarki.setAttribute("placeholder","🔍 Szukaj w wiadomościach...");
+        wyszukiwarka.appendChild(poleWyszukiwarki);
+        poleWyszukiwarki.addEventListener('input', () =>{
+            this.api.pobierzDane(this.replaceMainCzat.bind(this));
+        })
+        return wyszukiwarka;
+    }
     narysujMainCzatu(dane)
     {
         let mainCzatu = document.createElement("div");
-        mainCzatu.setAttribute("id","okno-wiadomosci")
-        dane.forEach(element => {
+        mainCzatu.setAttribute("id","okno-wiadomosci");
+        const szukanaFraza = document.getElementById('input-szukaj').value.toLowerCase();
+        const przefiltrowane = dane.filter(element => 
+            element.text.toLowerCase().includes(szukanaFraza) || element.author.toLowerCase().includes(szukanaFraza)
+        );
+        if(przefiltrowane.length == 0)
+        {
+            return mainCzatu;
+        }
+        if(przefiltrowane.length != dane.length)
+        {
+            this.wyszukiwano = true;
+        }
+        
+
+        przefiltrowane.forEach(element => {
             //console.log(element);
             let wiadomosc = document.createElement("div");
+            wiadomosc.setAttribute("id",element.id)
             wiadomosc.setAttribute("class", "msg-box");
             let blokObrazka = document.createElement("div");
             blokObrazka.setAttribute("class","msg-avatar");
@@ -89,9 +123,8 @@ class RysowanieCzatu
 
             let data = document.createElement("span");
             data.setAttribute("class","msg-time");
-            var godziny = new Date(element.timestamp).getHours();
-            var minuty = new Date(element.timestamp).getMinutes();
-            data.innerHTML = `${godziny}:${minuty}`;
+            var ladnaGodzina = new Date(element.timestamp).toLocaleTimeString('pl-PL');
+            data.innerHTML = ladnaGodzina;
 
             let headerWiadomosci = document.createElement("div");
             headerWiadomosci.setAttribute("class", "msg-header");
@@ -113,12 +146,11 @@ class RysowanieCzatu
             akcje.appendChild(przyciskAkcji)
             zawartosc.appendChild(akcje);
             wiadomosc.appendChild(blokObrazka);
-            wiadomosc.appendChild(zawartosc);
-            
-            
+            wiadomosc.appendChild(zawartosc);            
             mainCzatu.appendChild(wiadomosc);
-
+            
         });
+        
         return mainCzatu;
     }
     narysujWysylanieCzatu()
@@ -134,7 +166,7 @@ class RysowanieCzatu
         wprowadzanaWiadomosc.setAttribute("autocomplete","off");
         let wysylaniePrzycisk = document.createElement("button");
         wysylaniePrzycisk.setAttribute("type","submit");
-        wysylaniePrzycisk.innerHTML="Wyślij";
+        wysylaniePrzycisk.innerHTML=`🚀 Wyślij`;
 
         wysylanieWiadomosci.appendChild(wprowadzanaWiadomosc);
         wysylanieWiadomosci.appendChild(wysylaniePrzycisk);
@@ -178,17 +210,39 @@ class RysowanieCzatu
         {
             oknoWiadomosci.scrollTop = odczytanaWysokosc;
         }
+        
+        let obiektOstatniejWiadomosci = document.getElementsByClassName('msg-box')[document.getElementsByClassName('msg-box').length-1];
+        let obiektOstatniegoAutora = document.getElementsByClassName('msg-author')[document.getElementsByClassName('msg-author').length-1];
+        if((obiektOstatniegoAutora != null) && (obiektOstatniejWiadomosci != null))
+        {
+            if((this.idOstatniejWiadomosci != obiektOstatniejWiadomosci.getAttribute("id")) && (obiektOstatniegoAutora.innerHTML) != localStorage.getItem("shoutboxNick"))
+            {
+                if(this.wyszukiwano != true)
+                {
+                    this.dzwiekNowejWiadomosci.play();
+                }
+                else
+                {
+                    this.wyszukiwano = false;
+                }
+                             
+            }
+            this.idOstatniejWiadomosci = document.getElementsByClassName('msg-box')[document.getElementsByClassName('msg-box').length-1].getAttribute("id");
+        }        
+        
     }
     narysujCzat(dane)
     {
         document.getElementById(this.idKontenera).innerHTML = "";
         document.getElementById(this.idKontenera).appendChild(this.narysujHeaderCzatu())
+        document.getElementById(this.idKontenera).appendChild(this.narysujWyszukiwarkeCzatu())
         document.getElementById(this.idKontenera).appendChild(this.narysujMainCzatu(dane))
         
         
         document.getElementById(this.idKontenera).appendChild(this.narysujWysylanieCzatu());
         let oknoWiadomosci = document.getElementById("okno-wiadomosci");
         oknoWiadomosci.scrollTop = oknoWiadomosci.scrollHeight;
+        this.idOstatniejWiadomosci = document.getElementsByClassName('msg-box')[document.getElementsByClassName('msg-box').length-1].getAttribute("id");
     }
 }
 
