@@ -116,19 +116,46 @@ class RysowanieCzatu
             
             
             mainCzatu.appendChild(wiadomosc);
+
         });
         return mainCzatu;
     }
     narysujWysylanieCzatu()
     {
-
+        let wysylanieCzatu = document.createElement("div")
+        wysylanieCzatu.innerHTML = "test"
+        return wysylanieCzatu
     }
     narysujCzat(dane)
     {
+        
+        let oknoWiadomosci = document.getElementById("okno-wiadomosci");
+        let zabezpieczenieSkrolowania;
+        let odczytanaWysokosc; 
+        if(oknoWiadomosci!= null)
+        {
+            zabezpieczenieSkrolowania = oknoWiadomosci.scrollHeight - oknoWiadomosci.scrollTop <= oknoWiadomosci.clientHeight + 50
+            odczytanaWysokosc = oknoWiadomosci.scrollTop;
+        }
+        else
+        {
+            zabezpieczenieSkrolowania = true;
+        }
+        
         document.getElementById(this.idKontenera).innerHTML = "";
         document.getElementById(this.idKontenera).appendChild(this.narysujHeaderCzatu())
         document.getElementById(this.idKontenera).appendChild(this.narysujMainCzatu(dane));
-
+        oknoWiadomosci = document.getElementById("okno-wiadomosci");
+        if(zabezpieczenieSkrolowania)
+        {
+            oknoWiadomosci.scrollTop = oknoWiadomosci.scrollHeight;
+        }
+        else
+        {
+            oknoWiadomosci.scrollTop = odczytanaWysokosc;
+        }
+        
+        document.getElementById(this.idKontenera).appendChild(this.narysujWysylanieCzatu())
     }
 }
 

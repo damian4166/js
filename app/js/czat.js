@@ -16,7 +16,7 @@ class Czat
         {
             console.log("zalogowany")
             this.rysujCzat();
-            setInterval(this.rysujCzat(),3000);
+            setInterval(this.rysujCzat.bind(this),3000);
             return;
         }
         console.log("niezalogowany");
